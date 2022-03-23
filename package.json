@@ -1,7 +1,7 @@
 {
-  "name": "@tinyapps/tiny-nosql-db",
-  "version": "1.0.0",
-  "description": "Tiny NoSql database (MongoDB style)",
+  "name": "tiny-nosql-db",
+  "version": "0.0.1",
+  "description": "Tiny NoSql Database",
   "main": "index.js",
   "scripts": {
     "test": "tiny-testing-library"

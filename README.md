@@ -1,6 +1,6 @@
 # tiny-nosql-db
 
-Tiny NoSql Db for little projects
+Tiny NoSql Database for little projects
 
 ## Next Features
 
@@ -9,3 +9,7 @@ Tiny NoSql Db for little projects
 - Db connection methods
 - Horizontal scaling
 - Typescript migration
+
+## Changelog
+
+[See it here](./CHANGELOG.md)
