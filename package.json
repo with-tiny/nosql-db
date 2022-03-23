@@ -1,0 +1,26 @@
+{
+  "name": "@tinyapps/tiny-nosql-db",
+  "version": "1.0.0",
+  "description": "Tiny NoSql database (MongoDB style)",
+  "main": "index.js",
+  "scripts": {
+    "test": "tiny-testing-library"
+  },
+  "keywords": [
+    "mongo",
+    "mongodb",
+    "tiny",
+    "nosql",
+    "database",
+    "db"
+  ],
+  "author": "xavikortes",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "nanoid": "^3.3.1"
+  },
+  "devDependencies": {
+    "tiny-testing-library": "^0.0.4"
+  }
+}
