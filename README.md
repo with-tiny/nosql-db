@@ -7,7 +7,9 @@ Tiny NoSql Database for little projects
 - Readme. Installation and usage
 - Documentation page
 - Db persistence
+- Dump/restore db
 - Db connection methods
+- More find filters
 - Horizontal scaling
 - Typescript migration
 
