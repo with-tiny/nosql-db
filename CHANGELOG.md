@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.1] - 2022-03-23
+## [0.0.1] - 2022-03-24
 
 ### Added
 
 - First classes for data management
-- InMemory persistence
+- InFile persistence
+- Tested against tiny-testing-library v0.0.10
