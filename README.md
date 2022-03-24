@@ -9,7 +9,7 @@ Tiny NoSql Database for little projects
 - Db persistence
 - Dump/restore db
 - Db connection methods
-- More find filters
+- More query options
 - Horizontal scaling
 - Typescript migration
 
