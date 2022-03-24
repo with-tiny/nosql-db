@@ -1,28 +1,44 @@
 import { nanoid } from 'nanoid'
+import { loadCollectionFromFile, dumpCollectionToFile } from './utils.js'
 
 export default class TinyCollection {
   name = null
+  database = null
   records = {}
 
-  constructor(name) {
+  constructor(name, database) {
     this.name = name
+    this.database = database
+
+    this.loadFromFile()
   }
 
-  insertOne(newRecord) {
+  loadFromFile() {
+    this.records = loadCollectionFromFile(this.database, this.name)
+  }
+
+  dumpToFile() {
+    dumpCollectionToFile(this.database, this.name, this.records)
+  }
+
+  insertOne(newRecord, multi = false) {
     const _id = nanoid()
     this.records[_id] = {
       _id,
       ...newRecord,
     }
+
+    if (!multi) this.dumpToFile()
     return { ok: true, _id, count: 1 }
   }
 
   insertMany(newRecords) {
     const _ids = newRecords.map((newRecord) => {
-      let { _id } = this.insertOne(newRecord)
+      let { _id } = this.insertOne(newRecord, true)
       return _id
     })
 
+    this.dumpToFile()
     return { ok: true, _ids, count: _ids.length }
   }
 
@@ -38,6 +54,8 @@ export default class TinyCollection {
         ...updateRecord,
       },
     }
+
+    this.dumpToFile()
     return { ok: true, _id, count: 1 }
   }
 
@@ -59,6 +77,7 @@ export default class TinyCollection {
     })
     this.records = updatedRecords
 
+    this.dumpToFile()
     return { ok: true, _ids, count: _ids.length }
   }
 
@@ -67,6 +86,8 @@ export default class TinyCollection {
     if (!_id) return { ok: true, count: 0 }
 
     delete this.records[_id]
+
+    this.dumpToFile()
     return { ok: true, _id, count: 1 }
   }
 
@@ -79,6 +100,7 @@ export default class TinyCollection {
       return record._id
     })
 
+    this.dumpToFile()
     return { ok: true, _ids, count: _ids.length }
   }
 
@@ -111,5 +133,6 @@ export default class TinyCollection {
 
   remove() {
     this.records = {}
+    this.dumpToFile()
   }
 }

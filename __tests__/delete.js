@@ -1,56 +1,60 @@
 import TinyNoSqlDbServer from '../src/TinyNoSqlDbServer.js'
 
-await test('can delete one record', () => {
+describe('document deletion', () => {
   const server = new TinyNoSqlDbServer()
-  const db = server.use('pruebas')
+  let db
 
-  db.people.insertMany([
-    {
-      id: 2,
-      name: 'Jose',
-      surname: 'Martinez',
-    },
-    {
-      id: 3,
-      name: 'Jose',
-      surname: 'Fernandez',
-    },
-  ])
+  beforeEach(() => {
+    server.dropDatabase('pruebas')
+    db = server.use('pruebas')
+  })
 
-  expect(db.people.count()).toBe(2)
+  afterAll(() => {
+    server.dropDatabase('pruebas')
+  })
 
-  db.people.deleteOne({ id: 2 })
-  expect(db.people.count()).toBe(1)
+  test('can delete one record', () => {
+    db.people.insertMany([
+      {
+        id: 2,
+        name: 'Jose',
+        surname: 'Martinez',
+      },
+      {
+        id: 3,
+        name: 'Jose',
+        surname: 'Fernandez',
+      },
+    ])
 
-  db.people.remove()
-})
+    expect(db.people.count()).toBe(2)
 
-await test('can delete many records', () => {
-  const server = new TinyNoSqlDbServer()
-  const db = server.use('pruebas')
+    db.people.deleteOne({ id: 2 })
+    expect(db.people.count()).toBe(1)
+  })
 
-  db.people.insertMany([
-    {
-      id: 1,
-      name: 'Juan',
-      surname: 'Salazar',
-    },
-    {
-      id: 2,
-      name: 'Jose',
-      surname: 'Martinez',
-    },
-    {
-      id: 3,
-      name: 'Jose',
-      surname: 'Fernandez',
-    },
-  ])
+  test('can delete many records', () => {
+    db.people.insertMany([
+      {
+        id: 1,
+        name: 'Juan',
+        surname: 'Salazar',
+      },
+      {
+        id: 2,
+        name: 'Jose',
+        surname: 'Martinez',
+      },
+      {
+        id: 3,
+        name: 'Jose',
+        surname: 'Fernandez',
+      },
+    ])
 
-  expect(db.people.count()).toBe(3)
+    expect(db.people.count()).toBe(3)
 
-  db.people.deleteMany({ name: 'Jose' })
-  expect(db.people.count()).toBe(1)
-
-  db.people.remove()
+    db.people.deleteMany({ name: 'Jose' })
+    expect(db.people.count()).toBe(1)
+  })
 })

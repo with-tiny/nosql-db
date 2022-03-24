@@ -1,45 +1,49 @@
 import TinyNoSqlDbServer from '../src/TinyNoSqlDbServer.js'
 
-await test('can update one record', () => {
+describe('document update', () => {
   const server = new TinyNoSqlDbServer()
-  const db = server.use('pruebas')
+  let db
 
-  db.people.insertOne({
-    id: 1,
-    name: 'John',
-    surname: 'Dow',
+  beforeEach(() => {
+    server.dropDatabase('pruebas')
+    db = server.use('pruebas')
   })
 
-  db.people.updateOne({ id: 1 }, { name: 'Paco' })
+  afterAll(() => {
+    server.dropDatabase('pruebas')
+  })
 
-  expect(db.people.count()).toBe(1)
-  expect(db.people.findOne({ id: 1 }).name).toBe('Paco')
+  test('can update one record', () => {
+    db.people.insertOne({
+      id: 1,
+      name: 'John',
+      surname: 'Dow',
+    })
 
-  db.people.remove()
-})
+    db.people.updateOne({ id: 1 }, { name: 'Paco' })
 
-await test('can update many records', () => {
-  const server = new TinyNoSqlDbServer()
-  const db = server.use('pruebas')
+    expect(db.people.count()).toBe(1)
+    expect(db.people.findOne({ id: 1 }).name).toBe('Paco')
+  })
 
-  db.people.insertMany([
-    {
-      id: 2,
-      name: 'Jose',
-      surname: 'Martinez',
-    },
-    {
-      id: 3,
-      name: 'Jose',
-      surname: 'Fernandez',
-    },
-  ])
+  test('can update many records', () => {
+    db.people.insertMany([
+      {
+        id: 2,
+        name: 'Jose',
+        surname: 'Martinez',
+      },
+      {
+        id: 3,
+        name: 'Jose',
+        surname: 'Fernandez',
+      },
+    ])
 
-  const updated = db.people.updateMany({ name: 'Jose' }, { name: 'Paco' })
+    const updated = db.people.updateMany({ name: 'Jose' }, { name: 'Paco' })
 
-  expect(updated.count).toBe(2)
-  expect(db.people.count()).toBe(2)
-  expect(db.people.count({ name: 'Paco' })).toBe(2)
-
-  db.people.remove()
+    expect(updated.count).toBe(2)
+    expect(db.people.count()).toBe(2)
+    expect(db.people.count({ name: 'Paco' })).toBe(2)
+  })
 })

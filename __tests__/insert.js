@@ -1,41 +1,45 @@
 import TinyNoSqlDbServer from '../src/TinyNoSqlDbServer.js'
 
-await test('can insert one record', () => {
+describe('document insertion', () => {
   const server = new TinyNoSqlDbServer()
-  const db = server.use('pruebas')
+  let db
 
-  const inserted = db.people.insertOne({
-    id: 1,
-    name: 'John',
-    surname: 'Dow',
+  beforeEach(() => {
+    server.dropDatabase('pruebas')
+    db = server.use('pruebas')
   })
 
-  expect(inserted.ok).toBe(true)
-  expect(db.people.count()).toBe(1)
+  afterAll(() => {
+    server.dropDatabase('pruebas')
+  })
 
-  db.people.remove()
-})
+  test('can insert one record', () => {
+    const inserted = db.people.insertOne({
+      id: 1,
+      name: 'John',
+      surname: 'Dow',
+    })
 
-await test('can insert many records', () => {
-  const server = new TinyNoSqlDbServer()
-  const db = server.use('pruebas')
+    expect(inserted.ok).toBe(true)
+    expect(db.people.count()).toBe(1)
+  })
 
-  const inserted = db.people.insertMany([
-    {
-      id: 2,
-      name: 'Jose',
-      surname: 'Martinez',
-    },
-    {
-      id: 3,
-      name: 'Jose',
-      surname: 'Fernandez',
-    },
-  ])
+  test('can insert many records', () => {
+    const inserted = db.people.insertMany([
+      {
+        id: 2,
+        name: 'Jose',
+        surname: 'Martinez',
+      },
+      {
+        id: 3,
+        name: 'Jose',
+        surname: 'Fernandez',
+      },
+    ])
 
-  expect(inserted.ok).toBe(true)
-  expect(inserted._ids.length).toBe(2)
-  expect(db.people.count()).toBe(2)
-
-  db.people.remove()
+    expect(inserted.ok).toBe(true)
+    expect(inserted._ids.length).toBe(2)
+    expect(db.people.count()).toBe(2)
+  })
 })

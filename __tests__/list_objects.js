@@ -1,28 +1,36 @@
 import TinyNoSqlDbServer from '../src/TinyNoSqlDbServer.js'
 
-await test('can list databases', () => {
+describe('object listing', () => {
   const server = new TinyNoSqlDbServer()
+  let db
 
-  expect(server.listDatabases()).toStrictBe([])
-
-  server.use('pruebas')
-
-  expect(server.listDatabases()).toStrictBe(['pruebas'])
-})
-
-await test('can list collections', () => {
-  const server = new TinyNoSqlDbServer()
-  const db = server.use('pruebas')
-
-  expect(db.listCollections()).toStrictBe([])
-
-  db.people.insertOne({
-    id: 1,
-    name: 'John',
-    surname: 'Dow',
+  beforeEach(() => {
+    server.dropDatabase('pruebas')
   })
 
-  expect(db.listCollections()).toStrictBe(['people'])
+  afterAll(() => {
+    server.dropDatabase('pruebas')
+  })
 
-  db.people.remove()
+  test('can list databases', () => {
+    expect(server.listDatabases()).toStrictBe([])
+
+    server.use('pruebas')
+
+    expect(server.listDatabases()).toStrictBe(['pruebas'])
+  })
+
+  test('can list collections', () => {
+    db = server.use('pruebas')
+
+    expect(db.listCollections()).toStrictBe([])
+
+    db.people.insertOne({
+      id: 1,
+      name: 'John',
+      surname: 'Dow',
+    })
+
+    expect(db.listCollections()).toStrictBe(['people'])
+  })
 })
