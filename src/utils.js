@@ -1,70 +1,52 @@
 import fs from 'fs'
 
-const STORAGE_PATH = './_storage'
-const COLLECTION_EXTENSION = 'json'
-
-const getDatabaseFolderPath = (database) => `${STORAGE_PATH}/${database}`
-const getCollectionFilePath = (database, collection) =>
-  `${STORAGE_PATH}/${database}/${collection}.${COLLECTION_EXTENSION}`
-
-export const databaseFolderExists = (database) => {
-  const databaseFolder = getDatabaseFolderPath(database)
-  return fs.existsSync(databaseFolder)
+export const storageFolderExists = storage => {
+  return fs.existsSync(storage)
 }
 
-export const createDatabaseFolder = (database) => {
-  const databaseFolder = getDatabaseFolderPath(database)
-  return fs.mkdirSync(databaseFolder)
+export const createStorageFolder = storage => {
+  return fs.mkdirSync(storage)
 }
 
-export const deleteDatabaseFolder = (database) => {
-  const databaseFolder = getDatabaseFolderPath(database)
-  return fs.rmSync(databaseFolder, { recursive: true, force: true })
+export const databaseFolderExists = databasePath => {
+  return fs.existsSync(databasePath)
 }
 
-export const listDatabaseFolders = () =>
+export const createDatabaseFolder = databasePath => {
+  return fs.mkdirSync(databasePath)
+}
+
+export const deleteDatabaseFolder = databasePath => {
+  return fs.rmSync(databasePath, { recursive: true, force: true })
+}
+
+export const listDatabaseFolders = storage =>
   fs
-    .readdirSync(STORAGE_PATH, { withFileTypes: true })
-    .filter((item) => item.isDirectory())
-    .map((item) => item.name)
+    .readdirSync(storage, { withFileTypes: true })
+    .filter(item => item.isDirectory())
+    .map(item => item.name)
 
-export const collectionFileExists = (database, collection) => {
-  const collectionFile = getCollectionFilePath(database, collection)
-  return fs.existsSync(collectionFile)
+export const collectionFileExists = collectionPath => {
+  return fs.existsSync(collectionPath)
 }
 
-export const createCollectionFile = (database, collection) => {
-  const collectionFile = getCollectionFilePath(database, collection)
-  return fs.closeSync(fs.openSync(collectionFile, 'w'))
+export const createCollectionFile = collectionPath => {
+  return fs.closeSync(fs.openSync(collectionPath, 'w'))
 }
 
-export const deleteCollectionFile = (database, collection) => {
-  const collectionFile = getCollectionFilePath(database, collection)
-  return fs.rmSync(collectionFile, { force: true })
+export const deleteCollectionFile = collectionPath => {
+  return fs.rmSync(collectionPath, { force: true })
 }
-export const listCollectionFiles = (database) => {
-  const databaseFolder = getDatabaseFolderPath(database)
-  return fs
-    .readdirSync(databaseFolder, { withFileTypes: true })
-    .filter(
-      (item) =>
-        !item.isDirectory() && item.name.endsWith(`.${COLLECTION_EXTENSION}`)
-    )
-    .map((item) => item.name.slice(0, -(COLLECTION_EXTENSION.length + 1)))
-}
+export const listCollectionFiles = databasePath =>
+  fs
+    .readdirSync(databasePath, { withFileTypes: true })
+    .filter(item => !item.isDirectory() && item.name.endsWith('.json'))
+    .map(item => item.name.slice(0, -('json'.length + 1)))
 
-export const loadCollectionFromFile = (database, collection) => {
-  const collectionFile = getCollectionFilePath(database, collection)
-  let content = fs.readFileSync(collectionFile, 'utf8') || '{}'
+export const loadCollectionFromFile = collectionPath => {
+  let content = fs.readFileSync(collectionPath, 'utf8') || '{}'
   return JSON.parse(content ?? '{}')
 }
 
-export const dumpCollectionToFile = (database, collection, content) => {
-  const collectionFile = getCollectionFilePath(database, collection)
-
-  return fs.writeFile(
-    collectionFile,
-    JSON.stringify(content, null, 2),
-    () => {}
-  )
-}
+export const dumpCollectionToFile = (collectionPath, content) =>
+  fs.writeFile(collectionPath, JSON.stringify(content, null, 2), () => {})

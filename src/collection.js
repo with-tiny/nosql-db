@@ -5,20 +5,28 @@ export default class TinyCollection {
   name = null
   database = null
   records = {}
+  storagePath = undefined
 
-  constructor(name, database) {
+  constructor(name, database, storagePath) {
     this.name = name
     this.database = database
+    this.storagePath = storagePath
 
     this.loadFromFile()
   }
 
+  getCollectionPath() {
+    return `${this.storagePath}/${this.database}/${this.name}.json`
+  }
+
   loadFromFile() {
-    this.records = loadCollectionFromFile(this.database, this.name)
+    const collectionPath = this.getCollectionPath()
+    this.records = loadCollectionFromFile(collectionPath)
   }
 
   dumpToFile() {
-    dumpCollectionToFile(this.database, this.name, this.records)
+    const collectionPath = this.getCollectionPath()
+    dumpCollectionToFile(collectionPath, this.records)
   }
 
   insertOne(newRecord, multi = false) {
@@ -33,7 +41,7 @@ export default class TinyCollection {
   }
 
   insertMany(newRecords) {
-    const _ids = newRecords.map((newRecord) => {
+    const _ids = newRecords.map(newRecord => {
       let { _id } = this.insertOne(newRecord, true)
       return _id
     })
@@ -65,7 +73,7 @@ export default class TinyCollection {
 
     let updatedRecords = { ...this.records }
 
-    const _ids = records.map((record) => {
+    const _ids = records.map(record => {
       updatedRecords = {
         ...updatedRecords,
         [record._id]: {
@@ -95,7 +103,7 @@ export default class TinyCollection {
     const records = this.find(filter)
     if (!records.length) return { ok: true, count: 0 }
 
-    const _ids = records.map((record) => {
+    const _ids = records.map(record => {
       delete this.records[record._id]
       return record._id
     })
@@ -108,7 +116,7 @@ export default class TinyCollection {
     let tmpRegistry = Object.values(this.records)
     Object.entries(filter).forEach(
       ([field, value]) =>
-        (tmpRegistry = tmpRegistry.filter((record) => record[field] === value))
+        (tmpRegistry = tmpRegistry.filter(record => record[field] === value)),
     )
     return tmpRegistry
   }
@@ -127,7 +135,7 @@ export default class TinyCollection {
 
   distinct(field) {
     return [
-      ...new Set(Object.values(this.records).map((record) => record[field])),
+      ...new Set(Object.values(this.records).map(record => record[field])),
     ]
   }
 
