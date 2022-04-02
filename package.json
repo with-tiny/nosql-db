@@ -1,9 +1,18 @@
 {
-  "name": "tiny-nosql-db",
+  "name": "@tiny-apps/nosql-db",
   "version": "0.0.1",
   "description": "Tiny NoSql Database",
-  "main": "index.js",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "repository": "github:with-tiny/nosql-db",
   "scripts": {
+    "build": "tiny-dev-scripts build",
+    "lint": "tiny-dev-scripts lint",
+    "format": "tiny-dev-scripts format",
+    "check-format": "tiny-dev-scripts check-format",
+    "lint-staged": "lint-staged",
+    "validate": "npm-run-all --parallel check-format lint build",
+    "pre-commit": "npm run lint-staged && npm run build",
     "test": "tiny-testing-library"
   },
   "keywords": [
@@ -14,13 +23,29 @@
     "database",
     "db"
   ],
-  "author": "xavikortes",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "author": {
+    "name": "xavikortes",
+    "email": "javiercortesveliz@gmail.com"
+  },
   "type": "module",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "nanoid": "^3.3.1"
   },
   "devDependencies": {
-    "tiny-testing-library": "^0.0.10"
+    "@tiny-apps/dev-scripts": "^0.0.4",
+    "@tiny-apps/testing-library": "^0.0.5",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
+    "npm-run-all": "^4.1.5"
   }
 }
