@@ -15,10 +15,6 @@ Go to the root of your project and run
 npm install -D @tiny-apps/nosql-db
 ```
 
-Create the database folder
-```
-mkdir .storage
-```
 
 And it to .gitignore
 ```
@@ -69,6 +65,16 @@ db.test_people.find({
   age: 31,
 })
 // returns [{ _id: xxx, name: 'John', surname: 'Dow', age: 31 }]
+```
+
+## Custom folder
+
+You can change the default storage folder passing it as argument in server creation
+
+```js
+import nosqlServer from '@tiny-apps/nosql-server'
+
+const server = nosqlServer('./custom-storage')
 ```
 
 ## Available methods
