@@ -1,7 +1,7 @@
-import TinyNoSqlDbServer from '../src/TinyNoSqlDbServer.js'
+import nosqlServer from '../src/nosql-server.js'
 
 describe('object listing', () => {
-  const server = new TinyNoSqlDbServer()
+  const server = nosqlServer()
   let db
 
   beforeEach(() => {
