@@ -1,7 +1,7 @@
 {
   "name": "@tiny-apps/nosql-db",
   "version": "0.0.1",
-  "description": "Tiny NoSql Database",
+  "description": "Tiny no-sql database",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "repository": "github:with-tiny/nosql-db",
