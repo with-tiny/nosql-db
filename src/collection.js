@@ -112,13 +112,33 @@ export default class TinyCollection {
     return { ok: true, _ids, count: _ids.length }
   }
 
+  query(record, filter, parentField) {
+    return Object.entries(filter).reduce((flag, [field, value]) => {
+      if (field === '_eq') return flag && record[parentField] === value
+      if (field === '_neq') return flag && record[parentField] !== value
+      if (field === '_gt') return flag && record[parentField] > value
+      if (field === '_gte') return flag && record[parentField] >= value
+      if (field === '_lt') return flag && record[parentField] < value
+      if (field === '_lte') return flag && record[parentField] <= value
+      if (field === '_in') return flag && value.includes(record[parentField])
+      if (field === '_nin') return flag && !value.includes(record[parentField])
+      if (field === '_and')
+        return flag && value.every(cond => this.query(record, cond))
+      if (field === '_or')
+        return flag && value.some(cond => this.query(record, cond))
+      if (field === '_nor')
+        return flag && !value.some(cond => this.query(record, cond))
+      if (field === '_not') return flag && !this.query(record, value)
+      if (typeof value === 'object')
+        return flag && this.query(record, value, field)
+      return record[field] === value
+    }, true)
+  }
+
   find(filter = {}) {
     let tmpRegistry = Object.values(this.records)
-    Object.entries(filter).forEach(
-      ([field, value]) =>
-        (tmpRegistry = tmpRegistry.filter(record => record[field] === value)),
-    )
-    return tmpRegistry
+
+    return tmpRegistry.filter(record => this.query(record, filter))
   }
 
   findOne(filter = {}) {

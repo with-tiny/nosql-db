@@ -15,7 +15,6 @@ Go to the root of your project and run
 npm install -D @tiny-apps/nosql-db
 ```
 
-
 And it to .gitignore
 ```
 node_modules/
@@ -76,6 +75,37 @@ import nosqlServer from '@tiny-apps/nosql-server'
 
 const server = nosqlServer('./custom-storage')
 ```
+
+## Special operators
+
+Special operators are reserved keys that allow build complex queries. All special operators starts with and underscore.
+
+```js
+const discountedUsers = db.test_people.find({
+  _or: [
+    { age: { _lt: 18 } },
+    { age: { _gt: 65 } },
+  ]
+})
+```
+
+### Available operators
+
+#### Comparation operators
+- _eq. Filter where field is equal to value
+- _neq. Filter where field is not equal to value
+- _gt. Filter where field greater than value
+- _gte. Filter where field greater or equal than value
+- _lt. Filter where field lower than value
+- _lte. Filter where field lower or equal than value
+- _in. Filter where field is in value array
+- _nin. Filter where field is not in value array
+
+#### Logical operators
+- _and. Filter where all condition array items matches
+- _or. Filter where at leats one condition array item matches
+- _nor. Filter where none condition array item matches
+- _not. Filter where condition not matches
 
 ## Available methods
 
