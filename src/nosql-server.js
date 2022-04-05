@@ -8,6 +8,7 @@ import {
   listDatabaseFolders,
 } from './utils.js'
 
+const DEFAULT_SERVER_NAME = 'TinyNosqlServer'
 const DEFAULT_STORAGE_PATH = './.storage'
 
 class TinyNoSqlDbServer {
@@ -85,7 +86,7 @@ class TinyNoSqlDbServer {
 }
 
 export default ({
-  name = 'TinyNosqlServer',
+  name = DEFAULT_SERVER_NAME,
   path = DEFAULT_STORAGE_PATH,
 } = {}) => {
   return new TinyNoSqlDbServer({ name, path })
