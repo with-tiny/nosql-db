@@ -138,4 +138,4 @@ const discountedUsers = db.test_people.find({
 
 ## Next Features
 
-- Query filter specials ({ $gt: 5, $in: [1, 3, 5, 7, 9], etc... })
+- More query and update special operators
