@@ -11,12 +11,14 @@ import {
 const DEFAULT_STORAGE_PATH = './.storage'
 
 class TinyNoSqlDbServer {
-  database = null
+  name = undefined
   storagePath = undefined
+  database = null
   databases = {}
 
-  constructor(storagePath) {
-    this.storagePath = storagePath
+  constructor({ name, path }) {
+    this.name = name
+    this.storagePath = path
 
     this.createStorageFolder()
   }
@@ -82,7 +84,9 @@ class TinyNoSqlDbServer {
   }
 }
 
-export default path => {
-  const storagePath = path ?? DEFAULT_STORAGE_PATH
-  return new TinyNoSqlDbServer(storagePath)
+export default ({
+  name = 'TinyNosqlServer',
+  path = DEFAULT_STORAGE_PATH,
+} = {}) => {
+  return new TinyNoSqlDbServer({ name, path })
 }
