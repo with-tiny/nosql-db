@@ -66,14 +66,17 @@ db.test_people.find({
 // returns [{ _id: xxx, name: 'John', surname: 'Dow', age: 31 }]
 ```
 
-## Custom folder
+## Custom folder or name
 
-You can change the default storage folder passing it as argument in server creation
+You can change the default storage folder or name by passing them as named arguments in server creation
 
 ```js
 import nosqlServer from '@tiny-apps/nosql-server'
 
-const server = nosqlServer('./custom-storage')
+const server = nosqlServer({
+  name: 'Main Db Server',
+  path: './custom-storage'
+})
 ```
 
 ## Special operators
