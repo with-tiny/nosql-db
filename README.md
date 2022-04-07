@@ -15,14 +15,6 @@ Go to the root of your project and run
 npm install -D @tiny-apps/nosql-db
 ```
 
-And it to .gitignore
-```
-node_modules/
-dist/
-...
-.storage/
-```
-
 ## Usage
 
 Import the server and start it.
@@ -32,12 +24,12 @@ import nosqlServer from '@tiny-apps/nosql-db'
 const server = nosqlServer()
 ```
 
-Then set the database to use
+Then set the database you want to use
 ```js
 const db = server.use('test_database')
 ```
 
-And just choose a collection and run any method on it
+And just choose a collection and run any method on it (ex: collection 'test_people')
 ```js
 db.test_people.insertOne({
   name: 'John',
@@ -66,9 +58,21 @@ db.test_people.find({
 // returns [{ _id: xxx, name: 'John', surname: 'Dow', age: 31 }]
 ```
 
-## Custom folder or name
+And modification
 
-You can change the default storage folder or name by passing them as named arguments in server creation
+```js
+db.test_people.updateMany({ name: 'John' }, { name: 'Juan' })
+// returns { ok: true, _ids: [ xxx ], count: 1 }
+
+db.test_people.find({
+  age: 31,
+})
+// returns [{ _id: xxx, name: 'Juan', surname: 'Dow', age: 31 }]
+```
+
+## Custom storage path or server name
+
+You can change the default storage path or server name by passing them as named arguments in server creation
 
 ```js
 import nosqlServer from '@tiny-apps/nosql-db'
@@ -78,6 +82,8 @@ const server = nosqlServer({
   path: './custom-storage'
 })
 ```
+
+Make sure to add the path to the .gitignore file
 
 ## Special operators
 
