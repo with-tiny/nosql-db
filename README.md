@@ -27,7 +27,7 @@ dist/
 
 Import the server and start it.
 ```js
-import nosqlServer from '@tiny-apps/nosql-server'
+import nosqlServer from '@tiny-apps/nosql-db'
 
 const server = nosqlServer()
 ```
@@ -48,7 +48,7 @@ db.test_people.insertOne({
 Here is the complete example
 
 ```js
-import nosqlServer from '@tiny-apps/nosql-server'
+import nosqlServer from '@tiny-apps/nosql-db'
 
 const server = nosqlServer()
 const db = server.use('test_database')
@@ -71,7 +71,7 @@ db.test_people.find({
 You can change the default storage folder or name by passing them as named arguments in server creation
 
 ```js
-import nosqlServer from '@tiny-apps/nosql-server'
+import nosqlServer from '@tiny-apps/nosql-db'
 
 const server = nosqlServer({
   name: 'Main Db Server',
